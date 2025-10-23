@@ -16,7 +16,7 @@
 It mitigates motion jitter, unintended pauses, and trajectory drift caused by noisy demonstrations, resulting in stable and precise robotic manipulation.
 
 <div align="center">
-  <video src="https://github.com/user-attachments/assets/ea6baf09-1b1a-4f86-b428-237783ddfc7d" width="70%" poster="./assets/teaser_thumbnail.jpg"> </video>
+  <video src="https://github.com/user-attachments/assets/7b60dee5-864a-4e6b-9ad4-3b7ee868c803" width="70%" poster="./assets/teaser_thumbnail.jpg"> </video>
 </div>
 
 ### 🔑 Key Features
