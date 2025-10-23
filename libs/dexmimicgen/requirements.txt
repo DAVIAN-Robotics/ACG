@@ -1,0 +1,6 @@
+h5py==3.12.1
+imageio==2.36.1
+numpy==1.23.3
+setuptools==69.5.1
+termcolor==2.5.0
+huggingface_hub==0.29.1

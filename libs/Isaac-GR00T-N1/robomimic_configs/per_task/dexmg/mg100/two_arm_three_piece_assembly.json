@@ -1,0 +1,228 @@
+{
+  "algo_name": "gr00t",
+  "experiment": {
+    "name": "test_ds_two_arm_box_cleanup_D0_seed_201",
+    "validate": false,
+    "logging": {
+      "terminal_output_to_txt": true,
+      "log_tb": true,
+      "log_wandb": false,
+      "wandb_proj_name": "debug"
+    },
+    "mse": {},
+    "save": {
+      "enabled": true,
+      "every_n_seconds": null,
+      "every_n_epochs": 100,
+      "epochs": [],
+      "on_best_validation": false,
+      "on_best_rollout_return": false,
+      "on_best_rollout_success_rate": true
+    },
+    "epoch_every_n_steps": 500,
+    "validation_epoch_every_n_steps": 50,
+    "env": null,
+    "additional_envs": null,
+    "render": false,
+    "render_video": true,
+    "keep_all_videos": false,
+    "video_skip": 5,
+    "rollout": {
+      "enabled": true,
+      "n": 50,
+      "horizon": 400,
+      "rate": 100,
+      "warmstart": -1,
+      "terminate_on_success": true,
+      "batched": true,
+      "num_batch_envs": 25
+    },
+    "env_meta_update_dict": {
+      "env_kwargs": {
+        "camera_heights": 160,
+        "camera_widths": 256
+      }
+    }
+  },
+  "train": {
+    "data_format": "dexmg",
+    "data": [
+      {
+        "path": "~/datasets/robot/dexmimicgen/generated/two_arm_three_piece_assembly.hdf5",
+        "horizon": 300,
+        "do_eval": true,
+        "filter_key": "~/datasets/robot/dexmimicgen/generated/splits/100_demos.json",
+        "lang": "assemble the three pieces to form a block"
+      }
+    ],
+    "output_dir": "outputs",
+    "num_data_workers": 4,
+    "hdf5_cache_mode": "low_dim",
+    "hdf5_use_swmr": true,
+    "hdf5_load_next_obs": false,
+    "hdf5_normalize_obs": false,
+    "hdf5_filter_key": null,
+    "hdf5_validation_filter_key": null,
+    "seq_length": 16,
+    "pad_seq_length": true,
+    "frame_stack": 1,
+    "pad_frame_stack": true,
+    "dataset_keys": ["actions"],
+    "goal_mode": null,
+    "cuda": true,
+    "batch_size": 16,
+    "num_epochs": 600,
+    "seed": 201,
+    "action_keys": ["actions"],
+    "action_config": {
+      "actions": {
+        "normalization": null
+      },
+      "action_dict/right_rel_pos": {
+        "normalization": null
+      },
+      "action_dict/right_rel_rot_axis_angle": {
+        "normalization": null,
+        "format": "rot_axis_angle"
+      },
+      "action_dict/right_gripper": {
+        "normalization": "min_max"
+      },
+      "action_dict/left_rel_pos": {
+        "normalization": null
+      },
+      "action_dict/left_rel_rot_axis_angle": {
+        "normalization": null,
+        "format": "rot_axis_angle"
+      },
+      "action_dict/left_gripper": {
+        "normalization": "min_max"
+      },
+      "action_dict/right_abs_pos": {
+        "normalization": "min_max"
+      },
+      "action_dict/right_abs_rot_6d": {
+        "normalization": null,
+        "format": "rot_6d"
+      },
+      "action_dict/left_abs_pos": {
+        "normalization": "min_max"
+      },
+      "action_dict/left_abs_rot_6d": {
+        "normalization": null,
+        "format": "rot_6d"
+      }
+    }
+  },
+  "algo": {
+    "model_path": "nvidia/GR00T-N1-2B",
+    "metadata_path": "metadatas/robocasa_single_panda_gripper.json",
+    "data_config": "robocasa_single_panda_gripper",
+    "embodiment_tag": "single_panda_gripper",
+    "optim_params": {
+      "model": {
+        "learning_rate": {
+          "initial": 1e-4,
+          "scheduler_type": "cosine",
+          "num_warmup_steps": 1000
+        },
+        "optimizer_type": "adamw",
+        "regularization": {
+          "L2": 1e-5
+        },
+        "optimizer_kwargs": {
+          "betas": [0.95, 0.999],
+          "eps": 1e-8
+        }
+      }
+    }
+  },
+  "observation": {
+    "modalities": {
+      "obs": {
+        "low_dim": [
+          "robot0_eef_pos",
+          "robot0_eef_quat",
+          "robot0_gripper_qpos",
+          "robot1_eef_pos",
+          "robot1_eef_quat",
+          "robot1_gripper_qpos",
+          "robot0_right_eef_pos",
+          "robot0_right_eef_quat",
+          "robot0_right_gripper_qpos",
+          "robot0_left_eef_pos",
+          "robot0_left_eef_quat",
+          "robot0_left_gripper_qpos"
+        ],
+        "rgb": [
+          "agentview_image",
+          "robot0_eye_in_hand_image",
+          "robot1_eye_in_hand_image",
+          "shouldercamera0_image",
+          "shouldercamera1_image",
+          "frontview_image"
+        ],
+        "depth": [],
+        "scan": []
+      },
+      "goal": {
+        "low_dim": [],
+        "rgb": [],
+        "depth": [],
+        "scan": []
+      }
+    },
+    "encoder": {
+      "low_dim": {
+        "core_class": null,
+        "core_kwargs": {},
+        "obs_randomizer_class": null,
+        "obs_randomizer_kwargs": {}
+      },
+      "rgb": {
+        "core_class": "VisualCore",
+        "core_kwargs": {
+          "feature_dimension": 64,
+          "flatten": true,
+          "backbone_class": "ResNet18Conv",
+          "backbone_kwargs": {
+            "pretrained": false,
+            "input_coord_conv": false
+          },
+          "pool_class": "SpatialSoftmax",
+          "pool_kwargs": {
+            "num_kp": 32,
+            "learnable_temperature": false,
+            "temperature": 1.0,
+            "noise_std": 0.0,
+            "output_variance": false
+          }
+        },
+        "obs_randomizer_class": "CropRandomizer",
+        "obs_randomizer_kwargs": {
+          "crop_height": 224,
+          "crop_width": 224,
+          "num_crops": 1,
+          "pos_enc": false
+        }
+      },
+      "depth": {
+        "core_class": "VisualCore",
+        "core_kwargs": {},
+        "obs_randomizer_class": null,
+        "obs_randomizer_kwargs": {}
+      },
+      "scan": {
+        "core_class": "ScanCore",
+        "core_kwargs": {},
+        "obs_randomizer_class": null,
+        "obs_randomizer_kwargs": {}
+      }
+    }
+  },
+  "meta": {
+    "hp_base_config_file": "",
+    "hp_keys": ["ds", "seed"],
+    "hp_values": ["two_arm_box_cleanup_D0", 201]
+  }
+}

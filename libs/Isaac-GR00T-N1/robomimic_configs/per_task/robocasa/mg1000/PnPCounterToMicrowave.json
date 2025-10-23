@@ -1,0 +1,278 @@
+{
+    "algo_name": "gr00t",
+    "experiment": {
+        "name": "seed_123_ds_human-50_open_close_only",
+        "validate": false,
+        "logging": {
+            "terminal_output_to_txt": true,
+            "log_tb": false,
+            "log_wandb": true,
+            "wandb_proj_name": "gr00t_04-16"
+        },
+        "mse": {
+            "enabled": false,
+            "every_n_epochs": 50,
+            "on_save_ckpt": true,
+            "num_samples": 20,
+            "visualize": true
+        },
+        "save": {
+            "enabled": true,
+            "every_n_seconds": null,
+            "every_n_epochs": null,
+            "epochs": [
+                100,
+                200,
+                400
+            ],
+            "on_best_validation": false,
+            "on_best_rollout_return": false,
+            "on_best_rollout_success_rate": true
+        },
+        "epoch_every_n_steps": 50,
+        "validation_epoch_every_n_steps": 30,
+        "env": null,
+        "additional_envs": null,
+        "render": false,
+        "render_video": true,
+        "keep_all_videos": false,
+        "video_skip": 5,
+        "rollout": {
+            "enabled": true,
+            "n": 1,
+            "horizon": 500,
+            "rate": 10,
+            "warmstart": -1,
+            "terminate_on_success": true,
+            "batched": false,
+            "num_batch_envs": 4
+        },
+        "env_meta_update_dict": {
+            "env_kwargs": {
+                "generative_textures": null,
+                "scene_split": null,
+                "style_ids": null,
+                "layout_ids": null,
+                "layout_and_style_ids": [
+                    [
+                        1,
+                        1
+                    ],
+                    [
+                        2,
+                        2
+                    ],
+                    [
+                        4,
+                        4
+                    ],
+                    [
+                        6,
+                        9
+                    ],
+                    [
+                        7,
+                        10
+                    ]
+                ],
+                "randomize_cameras": false,
+                "obj_instance_split": "B",
+                "controller_configs": {
+                    "input_type": "delta"
+                },
+                "camera_heights": 128,
+                "camera_widths": 128
+            }
+        },
+        "ckpt_path": null
+    },
+    "train": {
+        "data": [
+            {
+                "path": "~/datasets/robot/robocasa/v0.1/single_stage/kitchen_pnp/PnPCounterToMicrowave/mg/2024-05-04-22-13-21_and_2024-05-07-07-41-17/demo_gentex_im128_randcams.hdf5",
+                "horizon": 600,
+                "do_eval": true,
+                "filter_key": "1000_demos"
+            }
+        ],
+        "output_dir": "~/repos/robot/robomimic_repo/expdata/robocasa/gr00t/04-16",
+        "num_data_workers": 5,
+        "hdf5_cache_mode": null,
+        "hdf5_use_swmr": true,
+        "hdf5_load_next_obs": false,
+        "hdf5_normalize_obs": false,
+        "hdf5_filter_key": null,
+        "hdf5_validation_filter_key": null,
+        "seq_length": 16,
+        "pad_seq_length": true,
+        "frame_stack": 1,
+        "pad_frame_stack": true,
+        "dataset_keys": [
+            "actions"
+        ],
+        "action_keys": [
+            "actions"
+        ],
+        "action_config": {
+            "actions": {
+                "normalization": null
+            },
+            "actions_abs": {
+                "normalization": "min_max"
+            },
+            "action_dict/abs_pos": {
+                "normalization": "min_max"
+            },
+            "action_dict/abs_rot_axis_angle": {
+                "normalization": "min_max",
+                "format": "rot_axis_angle"
+            },
+            "action_dict/abs_rot_6d": {
+                "normalization": null,
+                "format": "rot_6d"
+            },
+            "action_dict/rel_pos": {
+                "normalization": null
+            },
+            "action_dict/rel_rot_axis_angle": {
+                "normalization": null,
+                "format": "rot_axis_angle"
+            },
+            "action_dict/rel_rot_6d": {
+                "normalization": null,
+                "format": "rot_6d"
+            },
+            "action_dict/gripper": {
+                "normalization": null
+            },
+            "action_dict/base_mode": {
+                "normalization": null
+            }
+        },
+        "goal_mode": null,
+        "cuda": true,
+        "batch_size": 16,
+        "num_epochs": 400,
+        "seed": 123,
+        "max_grad_norm": 100.0,
+        "data_format": "robomimic",
+        "shuffled_obs_key_groups": null
+    },
+    "algo": {
+        "model_path": "nvidia/GR00T-N1-2B",
+        "metadata_path": "metadatas/robocasa_single_panda_gripper.json",
+        "data_config": "robocasa_single_panda_gripper",
+        "embodiment_tag": "single_panda_gripper",
+        "optim_params": {
+            "model": {
+                "learning_rate": {
+                    "initial": 0.0001,
+                    "scheduler_type": "cosine",
+                    "num_warmup_steps": 1000
+                },
+                "optimizer_type": "adamw",
+                "regularization": {
+                    "L2": 1e-05
+                },
+                "optimizer_kwargs": {
+                    "betas": [
+                        0.95,
+                        0.999
+                    ],
+                    "eps": 1e-08
+                }
+            }
+        }
+    },
+    "observation": {
+        "modalities": {
+            "obs": {
+                "low_dim": [
+                    "robot0_base_to_eef_pos",
+                    "robot0_base_to_eef_quat",
+                    "robot0_base_pos",
+                    "robot0_base_quat",
+                    "robot0_gripper_qpos"
+                ],
+                "rgb": [
+                    "robot0_agentview_left_image",
+                    "robot0_agentview_right_image",
+                    "robot0_eye_in_hand_image"
+                ],
+                "depth": [],
+                "scan": []
+            },
+            "goal": {
+                "low_dim": [],
+                "rgb": [],
+                "depth": [],
+                "scan": []
+            }
+        },
+        "encoder": {
+            "low_dim": {
+                "core_class": null,
+                "core_kwargs": {},
+                "obs_randomizer_class": null,
+                "obs_randomizer_kwargs": {}
+            },
+            "rgb": {
+                "core_class": "VisualCoreLanguageConditioned",
+                "core_kwargs": {
+                    "feature_dimension": 64,
+                    "backbone_class": "ResNet18ConvFiLM",
+                    "backbone_kwargs": {
+                        "pretrained": false,
+                        "input_coord_conv": false
+                    },
+                    "pool_class": "SpatialSoftmax",
+                    "pool_kwargs": {
+                        "num_kp": 32,
+                        "learnable_temperature": false,
+                        "temperature": 1.0,
+                        "noise_std": 0.0
+                    }
+                },
+                "obs_randomizer_class": "CropRandomizer",
+                "obs_randomizer_kwargs": {
+                    "crop_height": 224,
+                    "crop_width": 224,
+                    "num_crops": 1,
+                    "pos_enc": false
+                }
+            },
+            "depth": {
+                "core_class": "VisualCore",
+                "core_kwargs": {},
+                "obs_randomizer_class": null,
+                "obs_randomizer_kwargs": {}
+            },
+            "scan": {
+                "core_class": "ScanCore",
+                "core_kwargs": {},
+                "obs_randomizer_class": null,
+                "obs_randomizer_kwargs": {}
+            }
+        }
+    },
+    "meta": {
+        "hp_base_config_file": "~/repos/robot/robomimic_repo/robomimic/exps/templates/gr00t.json",
+        "hp_keys": [
+            "seed",
+            "ds",
+            "ac_keys",
+            "obsrandargs"
+        ],
+        "hp_values": [
+            123,
+            "human-50",
+            "abs_acs",
+            {
+                "crop_height": 224,
+                "crop_width": 224,
+                "num_crops": 1,
+                "pos_enc": false
+            }
+        ]
+    }
+}
