@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="description" content="ACG: Action Coherence Guidance for Flow-based VLA models">
+  <meta name="keywords" content="Vision-Language-Action, Flow Matching, Action Coherence">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>ACG: Action Coherence Guidance for Flow-based VLA models</title>
+  <link rel="icon" type="image/png" href="./static/images/fevicon-davian-robotics-64x64.png">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Google+Sans|Noto+Sans|Castoro" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="./static/css/bulma.min.css">
+  <link rel="stylesheet" href="./static/css/fontawesome.all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/jpswalsh/academicons@1/css/academicons.min.css">
+  <link rel="stylesheet" href="./static/css/index.css">
+
+  <!-- MathJax -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script defer src="./static/js/fontawesome.all.min.js"></script>
+
+  <style>
+    .strong_acg {
+      color: rgb(0, 90, 190);
+      font-weight: 700
+    }
+
+    .strong_ic {
+      color: rgb(230, 34, 46);
+      font-weight: 700
+    }
+
+    .media-row {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      gap: 16px;
+      max-width: 1200px;
+      margin: 20px auto 0 auto;
+      padding: 0 8px;
+      width: 100%;
+    }
+
+    .media-cell {
+      flex: 1;
+      max-width: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .media-cell img,
+    .media-cell video {
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      image-rendering: auto;
+      border-radius: 0;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+    }
+
+    /* 반응형 대응 */
+    @media screen and (max-width: 768px) {
+      .media-row {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .media-cell {
+        width: 100% !important;
+      }
+    }
+
+    .publication-links .button {
+      text-transform: none;
+    }
+
+    .concept-overview-caption p {
+      width: 90%;
+    }
+
+    .concept-overview {
+      width: 70%;
+      margin: 0 auto;
+    }
+
+    @media screen and (max-width: 768px) {
+      .concept-overview {
+        width: 100%;
+      }
+
+      .concept-overview-caption p {
+        width: 100%;
+      }
+    }
+
+    /* Qualitative Comparison Styles */
+    .comparison-section {
+      margin: 3rem 0;
+    }
+
+    .comparison-title {
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #333;
+    }
+
+    .comparison-container {
+      display: flex;
+      gap: 2rem;
+      margin: 2rem 0;
+      align-items: stretch;
+    }
+
+    .comparison-panel {
+      flex: 1;
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      /* position: sticky; */
+      /* top: 0rem; */
+    }
+
+    .comparison-item {
+      background: #f8f9fa;
+      border-radius: 12px;
+      padding: 1rem;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .comparison-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    }
+
+    .comparison-item h4 {
+      margin-bottom: 0.5rem;
+      color: #2c3e50;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .comparison-item video {
+      width: 100%;
+      height: auto;
+      border-radius: 8px;
+      margin-bottom: 0.5rem;
+    }
+
+    .method-label {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+      width: fit-content;
+    }
+
+    .method-baseline {
+      background: rgb(240, 240, 240);
+      color: #4a4a4a;
+      border: 1px solid #4a4a4a;
+    }
+
+    .method-ensemble {
+      background: #fff6dd;
+      color: #d7a309;
+      border: 1px solid #d7a309;
+    }
+
+    .method-cfg {
+      background: #ffebec;
+      color: #dc3545;
+      border: 1px solid #dc3545;
+    }
+
+    .method-noise {
+      background: #e6fcff;
+      color: #17a2b8;
+      border: 1px solid #17a2b8;
+    }
+
+    .method-smoothing {
+      background: #f1fcde;
+      color: #536e26;
+      border: 1px solid #536e26;
+    }
+
+    /* Table separators */
+    .thick-sep td,
+    .thick-sep th {
+      border-top: 3px solid #333 !important;
+    }
+
+    .logo-row {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      gap: 2rem;
+      margin-top: 0.5rem;
+    }
+
+    .logo-row img {
+      object-fit: contain;
+    }
+
+    .logo-row img:first-child {
+      height: 110px;
+      margin-left: -40px;
+    }
+
+    .logo-row img:last-child {
+      margin-top: 20px;
+      height: 55px;
+    }
+
+    @media screen and (max-width: 768px) {
+      .logo-row {
+        /* flex-direction: column; */
+        gap: 1rem;
+      }
+
+      .logo-row img:first-child {
+        height: 80px;
+        /* width: 32%; */
+        margin-left: 0px;
+      }
+
+      .logo-row img:last-child {
+        height: 42px;
+        /* width: 25%; */
+        margin-top: 12px;
+      }
+
+    }
+
+    /* Quantitative table outer border and grid */
+    .quant-table {
+      border: 2px solid #333;
+      border-collapse: collapse;
+    }
+
+    .quant-table th,
+    .quant-table td {
+      border: 1px dotted #bbb;
+    }
+
+    /* Baseline Navigation */
+    .baseline-nav {
+      display: flex;
+      justify-content: center;
+      gap: 0.3rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .baseline-nav button {
+      padding: 0.5rem 0.8rem;
+      border: 1px solid #ddd;
+      background: white;
+      border-radius: 20px;
+      cursor: pointer;
+      font-size: 0.85rem;
+      transition: all 0.2s ease;
+      white-space: wrap;
+    }
+
+    .baseline-nav button:hover {
+      background: #f0f0f0;
+      border-color: #999;
+    }
+
+    .baseline-nav button.active {
+      color: white;
+      border-color: #007bff;
+    }
+
+    /* Mode-specific colors */
+    .baseline-nav button[data-baseline="baseline"].active {
+      background: #909090;
+      border-color: #909090;
+    }
+
+    .baseline-nav button[data-baseline="ensemble2"].active {
+      background: #edb409;
+      border-color: #edb409;
+    }
+
+    .baseline-nav button[data-baseline="ensemble5"].active {
+      background: #dc7535;
+      border-color: #dc7535;
+    }
+
+    .baseline-nav button[data-baseline="action-smoothing"].active {
+      background: #536e26;
+      border-color: #536e26;
+    }
+
+    .baseline-nav button[data-baseline="feature-smoothing"].active {
+      background: #134009;
+      border-color: #134009;
+    }
+
+    .baseline-nav button[data-baseline="cfg"].active {
+      background: #dc3545;
+      border-color: #dc3545;
+    }
+
+    .baseline-nav button[data-baseline="noise"].active {
+      background: #17a2b8;
+      border-color: #17a2b8;
+    }
+
+    .baseline-content {
+      height: auto;
+    }
+
+    .baseline-item {
+      display: none;
+      height: auto;
+      text-align: center;
+    }
+
+    .baseline-item.active {
+      display: block;
+    }
+
+    .our-method-panel video,
+    .baseline-item video {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: contain;
+      border-radius: 8px;
+      margin: 0;
+      padding: 0;
+    }
+
+    /* Responsive adjustments */
+    @media screen and (max-width: 768px) {
+      .comparison-container {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      .our-method-panel {
+        position: static;
+      }
+
+      .baseline-nav {
+        gap: 0.25rem;
+      }
+
+      .baseline-nav button {
+        padding: 0.4rem 0.8rem;
+        font-size: 0.8rem;
+      }
+    }
+
+    /* Simulation Section Styles */
+    .simulation-section {
+      margin: 0.4rem 0;
+    }
+
+    .simulation-title {
+      text-align: center;
+      margin-bottom: 0.5rem;
+      color: #333;
+    }
+
+    .task-section {
+      margin: 0.3rem 0;
+    }
+
+    .task-title {
+      text-align: center;
+      /* margin-bottom: 2rem; */
+      margin-bottom: 0rem;
+      color: #2c3e50;
+      font-size: 1.2rem;
+      font-weight: 600;
+    }
+
+    .task-comparison {
+      display: flex;
+      gap: 0.5rem;
+      margin: 1rem 0;
+      /* align-items: flex-start; */
+      align-items: stretch;
+    }
+
+    .comparison-panel {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .comparison-panel video {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: contain;
+      border-radius: 8px;
+      margin: 0;
+      padding: 0;
+    }
+
+    .dexmg .comparison-panel video {
+      aspect-ratio: 16 / 9;
+    }
+
+    .comparison-panel h4 {
+      margin-bottom: 0.5rem;
+      color: #2c3e50;
+      font-size: 1.1rem;
+      font-weight: 600;
+    }
+
+    .comparison-panel .description {
+      font-size: 0.9rem;
+      color: #666;
+      line-height: 1.4;
+      text-align: center;
+      margin-top: 0.5rem;
+      /* margin-top: auto; */
+    }
+
+    .baseline-item .description {
+      margin-top: 0.1rem;
+      /* margin-top: auto; */
+    }
+
+    .method-acg {
+      background: #e6f4ff;
+      color: rgb(0, 90, 190);
+      border: 1px solid rgb(0, 90, 190);
+    }
+
+    .method-no-acg {
+      background: #f0f0f0;
+      /* light gray */
+      color: #555555;
+      /* dark gray text */
+      border: 1px solid #9e9e9e;
+      /* gray border */
+    }
+
+    /* Responsive for simulation section */
+    @media screen and (max-width: 768px) {
+      .task-comparison {
+        flex-direction: column;
+        gap: 1rem;
+      }
+
+      /* .comparison-panel video {
+        height: 250px;
+      } */
+    }
+
+    .custom-footer {
+      padding: 1.5rem 0;
+      background: #fafafa;
+      border-top: 1px solid #e5e5e5;
+      color: #666;
+    }
+
+    @media screen and (max-width: 768px) {
+      .custom-footer {
+        padding: 2rem 0.7rem;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav class="navbar" role="navigation" aria-label="main navigation">
+    <div class="navbar-brand">
+      <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+        <span aria-hidden="true"></span>
+      </a>
+    </div>
+    <div class="navbar-menu">
+      <div class="navbar-start" style="flex-grow: 1; justify-content: center;">
+        <a class="navbar-item" href="https://davian-robotics.github.io/">
+          <span class="icon">
+            <i class="fas fa-home"></i>
+          </span>
+        </a>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-body">
+      <div class="container is-max-desktop">
+        <div class="columns is-centered">
+          <div class="column has-text-centered">
+            <h1 class="title is-1 publication-title">
+              <span style="color: rgb(0, 90, 190);">ACG</span>: Action Coherence Guidance for Flow-based VLA models
+            </h1>
+            <div class="is-size-5 publication-authors">
+              <span class="author-block"><a href="https://pmh9960.github.io/" target="_blank" rel="noopener noreferrer">Minho
+                  Park*</a></span>,
+              <span class="author-block"><a href="https://kinam0252.github.io/" target="_blank" rel="noopener noreferrer">Kinam
+                  Kim*</a></span>,
+              <span class="author-block"><a href="https://junhahyung.github.io/" target="_blank" rel="noopener noreferrer">Junha
+                  Hyung</a></span>,
+              <span class="author-block"><a href="https://github.com/Whit3Snow" target="_blank" rel="noopener noreferrer">Hyojin
+                  Jang</a></span>,
+              <span class="author-block"><a href="https://github.com/myyzzzoooo" target="_blank" rel="noopener noreferrer">Hoiyeong
+                  Jin</a></span>,
+              <span class="author-block"><a href="https://yeolj00.github.io/" target="_blank" rel="noopener noreferrer">Jooyeol
+                  Yun</a></span>,
+              <span class="author-block"><a href="https://joonleesky.github.io/" target="_blank" rel="noopener noreferrer">Hojoon
+                  Lee</a></span>,
+              <span class="author-block"><a href="https://sites.google.com/site/jaegulchoo/" target="_blank"
+                  rel="noopener noreferrer">Jaegul Choo</a></span>
+            </div>
+            <div class="is-size-6 has-text-centered" style="margin-top: 0.25rem; margin-bottom: 0.75rem; color: #666;">
+              * equal contribution
+            </div>
+            <div class="is-size-5 publication-authors logo-row">
+              <!-- <span class="author-block">DAVIAN Robotics, KAIST AI</span> <br> -->
+              <img src="static/images/davian_robotics_2.png" alt="DAVIAN Robotics Logo" />
+              <img src="static/images/kaist_ai_logo.png" alt="KAIST AI Logo" />
+            </div>
+
+            <!-- links -->
+            <div class="column has-text-centered">
+              <div class="publication-links">
+                <span class="link-block">
+                  <p align="center">
+                    <a href="https://arxiv.org/abs/xxxx.xxxxx" class="external-link button is-normal is-rounded is-dark">
+                      <span>📄 arXiv</span>
+                    </a>
+                    <a href="https://github.com/davian-robotics/ACG" class="external-link button is-normal is-rounded is-dark">
+                      <span>💻 Code</span>
+                    </a>
+                    <a href="https://davian-robotics.github.io/ACG" class="external-link button is-normal is-rounded is-dark">
+                      <span>🌐 Project Page</span>
+                    </a>
+                    <a href="https://huggingface.co/collections/DAVIAN-Robotics/gr00t-n1-2b-post-trained-models"
+                      class="external-link button is-normal is-rounded is-dark">
+                      <span>🤗 Hugging Face</span>
+                    </a>
+                    <a href="https://www.youtube.com/watch?v=Fi6VpnPETYU" class="external-link button is-normal is-rounded is-dark">
+                      <span>🎥 YouTube Overview</span>
+                    </a>
+                  </p>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Teaser Section -->
+  <section class="section" id="method" style="padding-top: 0rem;">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-five-sixths">
+          <!-- <h2 class="title is-3 simulation-title">Teaser</h2> -->
+
+          <div class="content" style="margin-bottom: 2rem;">
+            <figure>
+              <div align="center">
+                <video src="https://github.com/user-attachments/assets/7b60dee5-864a-4e6b-9ad4-3b7ee868c803" width="100%"
+                  poster="./assets/teaser_thumbnail.jpg" controls muted loop
+                  style="border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"> </video>
+              </div>
+              <figcaption class="is-size-6" style="margin-top: 0.5rem; color: #666;">
+                Comparison between Vanilla GR00T-N1-2B and ACG (Ours) in real-world strawberry picking with SO-101. <br>
+                The vanilla GR00T-N1-2B often <strong>exhibits severe jittering</strong>, occasionally striking and displacing the target
+                object. <br>
+                In contrast, ACG maintains <span class="strong_acg">smooth and stable motions</span>,
+                successfully grasping the strawberry without disturbance.
+              </figcaption>
+            </figure>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Abstract. -->
+  <section class="section" style="padding-top: 0.5rem;">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered has-text-centered">
+        <div class="column is-five-sixths">
+          <h2 class="title is-3">Abstract</h2>
+          <div class="content has-text-justified">
+            <p>
+              Diffusion and flow-matching models have emerged as powerful robot policies, enabling Vision-Language-Action
+              (VLA) models to generalize across diverse scenes and instructions.
+              Yet, when trained via imitation learning, their high generative capacity makes them <strong>sensitive to noise in human
+                demonstrations: jerks, pauses, and jitter which reduce action coherence.</strong> Reduced action coherence causes
+              instability and
+              trajectory drift during deployment, failures that are catastrophic in fine-grained manipulation where precision is crucial.
+              In this paper, we present <span class="strong_acg">Action Coherence Guidance (ACG) for VLA models, a training-free test-time
+                guidance algorithm</span> that improves action coherence and thereby yields performance gains. Evaluated on RoboCasa,
+              DexMimicGen, and real-world SO-101 tasks, ACG consistently improves action coherence and boosts success rates across diverse
+              manipulation tasks.
+            </p>
+          </div>
+
+          <!-- Thumbnail Video -->
+          <div
+            style="position: relative; padding-bottom: 56.25%; height: 0; overflow: hidden; text-align: center; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+            <iframe src="https://www.youtube.com/embed/Fi6VpnPETYU" frameborder="0" allowfullscreen
+              style="position: absolute; top: 0; left: 0; width: 100%; height: 100%;"></iframe>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Method Section -->
+  <section class="section" id="method" style="padding-top: 2rem;">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-five-sixths">
+          <h2 class="title is-3 simulation-title"><span class="strong_acg">ACG</span>: Guiding Policy with Incoherent Action Generation</h2>
+          <!-- <h2 class="title is-3 simulation-title">Conceptual Overview</h2> -->
+          <div class="content concept-overview-caption has-text-centered">
+            <!-- <p class="is-size-5" style="margin-bottom: 0rem; color: #666; width: 90%; margin: 0 auto; display: block;"> -->
+            <p class="is-size-5" style="margin-bottom: 0rem; color: #666; margin: 0 auto; display: block;">
+              ACG constructs an <span class="strong_ic">incoherent vector field</span> and combines it with the original vector field to
+              <strong>extrapolate away from it</strong> that steers sampling toward <span class="strong_acg">coherent action
+                sequences.</span>
+            </p>
+          </div>
+
+          <!-- conceptual overview -->
+          <div class="content concept-overview" style="margin-bottom: 3rem;">
+            <figure>
+              <!-- <img src="static/images/1_conceptual_figure.png" alt="Conceptual illustration of ACG" style="width: 70%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" /> -->
+              <img src="static/images/1_conceptual_figure.png" alt="Conceptual illustration of ACG"
+                style="height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
+            </figure>
+          </div>
+
+          <!-- method -->
+          <div class="content" style="margin-bottom: 2rem;">
+            <figure>
+              <div style="display: inline-block; background-color: #fff; padding: 1rem; border-radius: 10px; 
+                  box-shadow: 0 2px 8px rgba(0,0,0,0.1); margin: 0rem 0;">
+                <img src="static/images/2_method_overview.png" alt="Method overview"
+                  style="display: block; width: 100%; height: auto; border-radius: 8px;" />
+              </div>
+
+              <figcaption class="is-size-6" style="margin-top: 0.5rem; color: #666;">
+                <strong>Starting from the original model architecture (left)</strong>, we modify self-attention by <span
+                  class="strong_ic">replacing the attention map with the identity map</span> to generate an incoherent action sequence
+                (right).
+                The coherent denoising vector is then guided using the <span class="strong_acg">opposite direction</span> of the incoherent
+                denoising vector (middle).
+              </figcaption>
+            </figure>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Qualitative Comparison Section -->
+  <section class="section" style="padding-top: 0.5rem;">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-five-sixths">
+          <h2 class="title is-3 comparison-title">Qualitative Comparison</h2>
+          <div class="content has-text-centered">
+            <p class="is-size-5" style="margin-bottom: 2rem; color: #666;">
+              Visual comparison of different methods on real-world strawberry-picking tasks.<br>
+              ACG produces smoother and more coherent motions than baselines, resulting in higher success rates.
+            </p>
+          </div>
+
+          <!-- Real-world (SO-101) -->
+          <h2 class="title is-4 simulation-title">Real-world (SO-101)</h2>
+          <!-- Navigation Buttons (Outside the comparison boxes) -->
+          <div class="baseline-nav" style="margin-bottom: 1rem;">
+            <button class="baseline-btn active" data-baseline="baseline">Vanilla</button>
+            <button class="baseline-btn" data-baseline="ensemble2">Ensemble 2</button>
+            <button class="baseline-btn" data-baseline="ensemble5">Ensemble 5</button>
+            <button class="baseline-btn" data-baseline="action-smoothing">Action Smoothing</button>
+            <button class="baseline-btn" data-baseline="feature-smoothing">Feature Smoothing</button>
+            <button class="baseline-btn" data-baseline="cfg">CFG</button>
+            <button class="baseline-btn" data-baseline="noise">White Noise</button>
+          </div>
+          <div class="comparison-container">
+            <!-- Baseline Comparison Panel (Left) -->
+            <div class="comparison-panel">
+              <!-- Baseline Content -->
+              <div class="baseline-content">
+                <!-- Baseline -->
+                <div class="baseline-item active" id="baseline">
+                  <span class="method-label method-baseline">Vanilla</span>
+                  <video controls muted loop>
+                    <source src="static/videos/quali_comparison/baseline.mp4" type="video/mp4">
+                  </video>
+                  <p class="description">
+                    <strong>Exhibits severe jerks and jittering</strong>, often knocking strawberries away from the target.
+                  </p>
+                </div>
+                <!-- Ensemble 2 -->
+                <div class="baseline-item" id="ensemble2">
+                  <span class="method-label method-ensemble">Ensemble 2</span>
+                  <video controls muted loop>
+                    <source src="static/videos/quali_comparison/ensemble2.mp4" type="video/mp4">
+                  </video>
+                  <p class="description">
+                    Improves temporal stability but <strong>hesitates between targets due to averaging</strong> across inferences.
+                  </p>
+                </div>
+                <!-- Ensemble 5 -->
+                <div class="baseline-item" id="ensemble5">
+                  <span class="method-label method-ensemble">Ensemble 5</span>
+                  <video controls muted loop>
+                    <source src="static/videos/quali_comparison/ensemble5.mp4" type="video/mp4">
+                  </video>
+                  <p class="description">
+                    Improves temporal stability but <strong>hesitates between targets due to averaging</strong> across inferences.
+                  </p>
+                </div>
+                <!-- Action Smoothing -->
+                <div class="baseline-item" id="action-smoothing">
+                  <span class="method-label method-smoothing">Action Smoothing</span>
+                  <video controls muted loop>
+                    <source src="static/videos/quali_comparison/action_smoothing.mp4" type="video/mp4">
+                  </video>
+                  <p class="description">
+                    Reduces fluctuations but <strong>produces inaccurate motions</strong> since no task-specific prior is applied.
+                  </p>
+                </div>
+                <!-- Feature Smoothing -->
+                <div class="baseline-item" id="feature-smoothing">
+                  <span class="method-label method-smoothing">Feature Smoothing</span>
+                  <video controls muted loop>
+                    <source src="static/videos/quali_comparison/feature_smoothing.mp4" type="video/mp4">
+                  </video>
+                  <p class="description">
+                    Reduces fluctuations but <strong>produces inaccurate motions</strong> since no task-specific prior is applied.
+                  </p>
+                </div>
+                <!-- CFG -->
+                <div class="baseline-item" id="cfg">
+                  <span class="method-label method-cfg">CFG</span>
+                  <video controls muted loop>
+                    <source src="static/videos/quali_comparison/cfg.mp4" type="video/mp4">
+                  </video>
+                  <p class="description">
+                    Shows <strong>no noticeable improvement in coherence</strong> over the vanilla baseline.
+                  </p>
+                </div>
+                <!-- White Noise -->
+                <div class="baseline-item" id="noise">
+                  <span class="method-label method-noise">White Noise</span>
+                  <video controls muted loop>
+                    <source src="static/videos/quali_comparison/white_noise.mp4" type="video/mp4">
+                  </video>
+                  <p class="description">
+                    <strong>Generates smooth but imprecise motions</strong>, occasionally pushing strawberries away.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Our Method Panel (Right) -->
+            <div class="comparison-panel">
+              <span class="method-label method-acg">ACG (Ours)</span>
+              <video controls muted loop>
+                <source src="static/videos/quali_comparison/ours.mp4" type="video/mp4">
+              </video>
+              <p class="description">
+                <span class="strong_acg">Performs smooth, coherent, and precise picking motions,</span> consistently achieving successful
+                strawberry grasps.
+              </p>
+            </div>
+
+          </div>
+
+          <!-- Simulation (RoboCasa) -->
+          <h2 class="title is-4 simulation-title" style="margin-top: 4rem">Simulation (RoboCasa)</h2>
+          <div class="task-section">
+            <div class="columns">
+              <!-- Coffee Serving Task -->
+              <div class="column is-half">
+                <h3 class="task-title">Coffee Serving Task</h3>
+                <div class="task-comparison">
+                  <!-- w/o ACG -->
+                  <div class="comparison-panel">
+                    <span class="method-label method-no-acg">w/o ACG</span>
+                    <video controls muted loop>
+                      <source src="static/videos/simulation_quali/robocasa/CoffeeServeMug_baseline.mp4" type="video/mp4">
+                    </video>
+                    <p class="description">
+                      <strong>The gripper shakes during grasping</strong>, leading to frequent failures during placement.
+                    </p>
+                  </div>
+
+                  <!-- w/ ACG -->
+                  <div class="comparison-panel">
+                    <span class="method-label method-acg">w/ ACG</span>
+                    <video controls muted loop>
+                      <source src="static/videos/simulation_quali/robocasa/CoffeeServeMug_ours.mp4" type="video/mp4">
+                    </video>
+                    <p class="description">
+                      Grasps and serves the cup with <span class="strong_acg">stable, controlled movements</span> without shaking or
+                      dropping.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Microwave Button Task -->
+              <div class="column is-half">
+                <h3 class="task-title">Microwave Button Task</h3>
+                <div class="task-comparison">
+                  <!-- w/o ACG -->
+                  <div class="comparison-panel">
+                    <span class="method-label method-no-acg">w/o ACG</span>
+                    <video controls muted loop>
+                      <source src="static/videos/simulation_quali/robocasa/TurnOnMicrowave_baseline.mp4" type="video/mp4">
+                    </video>
+                    <p class="description">
+                      The gripper <strong>jitters and fails to press the button</strong> correctly.
+                    </p>
+                  </div>
+
+                  <!-- w/ ACG -->
+                  <div class="comparison-panel">
+                    <span class="method-label method-acg">w/ ACG</span>
+                    <video controls muted loop>
+                      <source src="static/videos/simulation_quali/robocasa/TurnOnMicrowave_ours.mp4" type="video/mp4">
+                    </video>
+                    <p class="description">
+                      <span class="strong_acg">Accurately presses the microwave button</span> in a single, stable motion.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Simulation (DexMG) -->
+          <h2 class="title is-4 simulation-title" style="margin-top: 4rem">Simulation (DexMimicGen)</h2>
+          <div class="task-section dexmg">
+            <div class="columns">
+              <!-- TwoArmThreading Task -->
+              <div class="column is-half">
+                <h3 class="task-title">TwoArmThreading</h3>
+                <div class="task-comparison">
+                  <!-- w/o ACG -->
+                  <div class="comparison-panel">
+                    <span class="method-label method-no-acg">w/o ACG</span>
+                    <video controls muted loop>
+                      <source src="static/videos/simulation_quali/dexmimicgen/TwoArmThreading_baseline.mp4" type="video/mp4">
+                    </video>
+                    <p class="description">
+                      Fails to insert the rod due to <strong>jittery and imprecise motion</strong> generation.
+                    </p>
+                  </div>
+
+                  <!-- w/ ACG -->
+                  <div class="comparison-panel">
+                    <span class="method-label method-acg">w/ ACG</span>
+                    <video controls muted loop>
+                      <source src="static/videos/simulation_quali/dexmimicgen/TwoArmThreading_ours.mp4" type="video/mp4">
+                    </video>
+                    <p class="description">
+                      <span class="strong_acg">Successfully threads the rod through the hole</span> with coordinated actions.
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              <!-- TwoArmLiftTray Task -->
+              <div class="column is-half">
+                <h3 class="task-title">TwoArmLiftTray</h3>
+                <div class="task-comparison">
+                  <!-- w/o ACG -->
+                  <div class="comparison-panel">
+                    <span class="method-label method-no-acg">w/o ACG</span>
+                    <video controls muted loop>
+                      <source src="static/videos/simulation_quali/dexmimicgen/TwoArmLiftTray_baseline.mp4" type="video/mp4">
+                    </video>
+                    <p class="description">
+                      Fails to lift the tray properly due to <strong>hesitation during grasping.</strong>
+                    </p>
+                  </div>
+
+                  <!-- w/ ACG -->
+                  <div class="comparison-panel">
+                    <span class="method-label method-acg">w/ ACG</span>
+                    <video controls muted loop>
+                      <source src="static/videos/simulation_quali/dexmimicgen/TwoArmLiftTray_ours.mp4" type="video/mp4">
+                    </video>
+                    <p class="description">
+                      <span class="strong_acg">Lifts the tray smoothly</span> with a stable, balanced grasp on both handles.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quantitative Results -->
+  <section class="section" style="padding-top: 0.5rem;">
+    <div class="container is-max-desktop">
+      <div class="columns is-centered">
+        <div class="column is-five-sixths">
+          <h2 class="title is-3 comparison-title">Quantitative Results</h2>
+          <div class="content has-text-centered">
+            <p class="is-size-5" style="margin-bottom: 2rem; color: #666;">
+              <!-- Comparison of task success rates across various methods on RoboCasa, DexMimicGen and SO-101 benchmarks. -->
+              <strong>Result 1: ACG consistently outperforms baselines by significant margins.</strong>
+            </p>
+          </div>
+
+          <div class="content" style="margin-bottom: 2rem;">
+            <figure>
+              <img src="static/images/table1_success_rate.png" alt="Quantitative Results"
+                style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
+            </figure>
+          </div>
+
+          <div class="columns is-variable is-5">
+            <div class="column is-half">
+              <div class="content has-text-centered">
+                <p class="is-size-5" style="margin-bottom: 2rem; color: #666;">
+                  <strong>Result 2: ACG significantly improves temporal action coherence.</strong>
+                </p>
+              </div>
+
+              <figure>
+                <img src="static/images/table2_action_coherence_quanti.png" alt="Quantitative Results"
+                  style="width:100%;height:auto;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);" />
+              </figure>
+            </div>
+            <div class="column is-half">
+              <div class="content has-text-centered">
+                <p class="is-size-5" style="margin-bottom: 2rem; color: #666;">
+                  <strong>Result 3: ACG remains effective across various VLA backbones.</strong>
+                </p>
+              </div>
+
+              <figure>
+                <img src="static/images/table3_generalization.png" alt="Quantitative Results"
+                  style="width:100%;height:auto;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);" />
+              </figure>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Acknowledgement, Footer -->
+  <footer class="footer custom-footer">
+    <div class="container is-max-desktop has-text-centered">
+      <p class="is-size-6" style="color:#666; line-height:1.6;">
+        This project builds upon the incredible open-source efforts of
+        <a href="https://github.com/NVIDIA/Isaac-GR00T" target="_blank" rel="noopener">Isaac-GR00T</a>,
+        <a href="https://github.com/ARISE-Initiative/robosuite" target="_blank" rel="noopener">Robosuite</a>,
+        <a href="https://github.com/ARISE-Initiative/robomimic" target="_blank" rel="noopener">Robomimic</a>,
+        <a href="https://github.com/robocasa/robocasa" target="_blank" rel="noopener">RoboCasa</a>,
+        <a href="https://github.com/NVlabs/dexmimicgen" target="_blank" rel="noopener">DexMimicGen</a>, and
+        <a href="https://github.com/huggingface/diffusers" target="_blank" rel="noopener">Diffusers</a>.
+        We sincerely appreciate their outstanding contributions to the robotics and AI community.
+      </p>
+    </div>
+    <br>
+    <div class="content has-text-centered" style="color: #666;">
+      <p style="margin-bottom: 0.5rem;">
+        DAVIAN Robotics, KAIST AI |
+        <a href="https://arxiv.org/abs/xxxx.xxxxx" target="_blank" rel="noopener">arXiv</a>
+        &nbsp;·&nbsp;
+        <a href="https://github.com/davian-robotics/ACG" target="_blank" rel="noopener">Code</a>
+        &nbsp;·&nbsp;
+        <a href="https://davian-robotics.github.io/ACG" target="_blank" rel="noopener">Project Page</a>
+        &nbsp;·&nbsp;
+        <a href="https://huggingface.co/collections/DAVIAN-Robotics/gr00t-n1-2b-post-trained-models" target="_blank" rel="noopener">Hugging
+          Face</a>
+        &nbsp;·&nbsp;
+        <a href="https://www.youtube.com/watch?v=Fi6VpnPETYU" target="_blank" rel="noopener">YouTube</a>
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    function enforceAutoplayLoop(video) {
+      // Play on load
+      if (video.paused) video.play();
+      // Always loop
+      video.addEventListener('ended', function () {
+        video.currentTime = 0;
+        video.play();
+      });
+      // Prevent seeking to pause only if not paused by user
+      video.addEventListener('seeking', function () {
+        if (!video.paused) video.play();
+      });
+    }
+
+    // 동영상 모두 동일하게 0초에서 시작
+    function syncAllVideos() {
+      const videos = document.querySelectorAll('video');
+      videos.forEach(v => {
+        try {
+          v.currentTime = 0;
+          v.play();
+        } catch (e) { }
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelectorAll('video').forEach(enforceAutoplayLoop);
+      syncAllVideos();
+    });
+
+    // Observe for dynamically added/replaced videos
+    const observer = new MutationObserver(() => {
+      document.querySelectorAll('video').forEach(enforceAutoplayLoop);
+      syncAllVideos();
+    });
+    observer.observe(document.body, { childList: true, subtree: true });
+
+    // Baseline comparison functionality
+    function initBaselineComparison() {
+      const baselineButtons = document.querySelectorAll('.baseline-btn');
+      const baselineItems = document.querySelectorAll('.baseline-item');
+
+      baselineButtons.forEach(button => {
+        button.addEventListener('click', function () {
+          const targetBaseline = this.getAttribute('data-baseline');
+
+          // Remove active class from all buttons and items
+          baselineButtons.forEach(btn => btn.classList.remove('active'));
+          baselineItems.forEach(item => item.classList.remove('active'));
+
+          // Add active class to clicked button and corresponding item
+          this.classList.add('active');
+          const targetItem = document.getElementById(targetBaseline);
+          if (targetItem) {
+            targetItem.classList.add('active');
+
+            // Sync videos when switching
+            setTimeout(() => {
+              syncAllVideos();
+            }, 100);
+          }
+        });
+      });
+    }
+
+    // Initialize baseline comparison when DOM is loaded
+    document.addEventListener('DOMContentLoaded', function () {
+      initBaselineComparison();
+    });
+  </script>
+
+</body>
+
+</html>
