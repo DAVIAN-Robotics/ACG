@@ -579,9 +579,10 @@
           <div class="content" style="margin-bottom: 2rem;">
             <figure>
               <div align="center">
-                <video src="https://github.com/user-attachments/assets/7b60dee5-864a-4e6b-9ad4-3b7ee868c803" width="100%"
-                  poster="./assets/teaser_thumbnail.jpg" controls muted loop
-                  style="border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);"> </video>
+                <video controls muted loop playsinline webkit-playsinline autoplay preload="metadata"
+                  src="https://github.com/user-attachments/assets/7b60dee5-864a-4e6b-9ad4-3b7ee868c803" width="100%"
+                  poster="./assets/teaser_thumbnail.jpg" style="border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                </video>
               </div>
               <figcaption class="is-size-6" style="margin-top: 0.5rem; color: #666;">
                 Comparison between Vanilla GR00T-N1-2B and ACG (Ours) in real-world strawberry picking with SO-101. <br>
@@ -712,7 +713,7 @@
                 <!-- Baseline -->
                 <div class="baseline-item active" id="baseline">
                   <span class="method-label method-baseline">Vanilla</span>
-                  <video controls muted loop>
+                  <video controls muted loop playsinline webkit-playsinline autoplay preload="metadata">
                     <source src="static/videos/quali_comparison/baseline.mp4" type="video/mp4">
                   </video>
                   <p class="description">
@@ -722,7 +723,7 @@
                 <!-- Ensemble 2 -->
                 <div class="baseline-item" id="ensemble2">
                   <span class="method-label method-ensemble">Ensemble 2</span>
-                  <video controls muted loop>
+                  <video controls muted loop playsinline webkit-playsinline autoplay preload="metadata">
                     <source src="static/videos/quali_comparison/ensemble2.mp4" type="video/mp4">
                   </video>
                   <p class="description">
@@ -732,7 +733,7 @@
                 <!-- Ensemble 5 -->
                 <div class="baseline-item" id="ensemble5">
                   <span class="method-label method-ensemble">Ensemble 5</span>
-                  <video controls muted loop>
+                  <video controls muted loop playsinline webkit-playsinline autoplay preload="metadata">
                     <source src="static/videos/quali_comparison/ensemble5.mp4" type="video/mp4">
                   </video>
                   <p class="description">
@@ -742,7 +743,7 @@
                 <!-- Action Smoothing -->
                 <div class="baseline-item" id="action-smoothing">
                   <span class="method-label method-smoothing">Action Smoothing</span>
-                  <video controls muted loop>
+                  <video controls muted loop playsinline webkit-playsinline autoplay preload="metadata">
                     <source src="static/videos/quali_comparison/action_smoothing.mp4" type="video/mp4">
                   </video>
                   <p class="description">
@@ -752,7 +753,7 @@
                 <!-- Feature Smoothing -->
                 <div class="baseline-item" id="feature-smoothing">
                   <span class="method-label method-smoothing">Feature Smoothing</span>
-                  <video controls muted loop>
+                  <video controls muted loop playsinline webkit-playsinline autoplay preload="metadata">
                     <source src="static/videos/quali_comparison/feature_smoothing.mp4" type="video/mp4">
                   </video>
                   <p class="description">
@@ -762,7 +763,7 @@
                 <!-- CFG -->
                 <div class="baseline-item" id="cfg">
                   <span class="method-label method-cfg">CFG</span>
-                  <video controls muted loop>
+                  <video controls muted loop playsinline webkit-playsinline autoplay preload="metadata">
                     <source src="static/videos/quali_comparison/cfg.mp4" type="video/mp4">
                   </video>
                   <p class="description">
@@ -772,7 +773,7 @@
                 <!-- White Noise -->
                 <div class="baseline-item" id="noise">
                   <span class="method-label method-noise">White Noise</span>
-                  <video controls muted loop>
+                  <video controls muted loop playsinline webkit-playsinline autoplay preload="metadata">
                     <source src="static/videos/quali_comparison/white_noise.mp4" type="video/mp4">
                   </video>
                   <p class="description">
@@ -785,7 +786,7 @@
             <!-- Our Method Panel (Right) -->
             <div class="comparison-panel">
               <span class="method-label method-acg">ACG (Ours)</span>
-              <video controls muted loop>
+              <video controls muted loop playsinline webkit-playsinline autoplay preload="metadata">
                 <source src="static/videos/quali_comparison/ours.mp4" type="video/mp4">
               </video>
               <p class="description">
@@ -807,7 +808,7 @@
                   <!-- w/o ACG -->
                   <div class="comparison-panel">
                     <span class="method-label method-no-acg">w/o ACG</span>
-                    <video controls muted loop>
+                    <video controls muted loop playsinline webkit-playsinline autoplay preload="metadata">
                       <source src="static/videos/simulation_quali/robocasa/CoffeeServeMug_baseline.mp4" type="video/mp4">
                     </video>
                     <p class="description">
@@ -818,7 +819,7 @@
                   <!-- w/ ACG -->
                   <div class="comparison-panel">
                     <span class="method-label method-acg">w/ ACG</span>
-                    <video controls muted loop>
+                    <video controls muted loop playsinline webkit-playsinline autoplay preload="metadata">
                       <source src="static/videos/simulation_quali/robocasa/CoffeeServeMug_ours.mp4" type="video/mp4">
                     </video>
                     <p class="description">
@@ -836,7 +837,7 @@
                   <!-- w/o ACG -->
                   <div class="comparison-panel">
                     <span class="method-label method-no-acg">w/o ACG</span>
-                    <video controls muted loop>
+                    <video controls muted loop playsinline webkit-playsinline autoplay preload="metadata">
                       <source src="static/videos/simulation_quali/robocasa/TurnOnMicrowave_baseline.mp4" type="video/mp4">
                     </video>
                     <p class="description">
@@ -847,7 +848,7 @@
                   <!-- w/ ACG -->
                   <div class="comparison-panel">
                     <span class="method-label method-acg">w/ ACG</span>
-                    <video controls muted loop>
+                    <video controls muted loop playsinline webkit-playsinline autoplay preload="metadata">
                       <source src="static/videos/simulation_quali/robocasa/TurnOnMicrowave_ours.mp4" type="video/mp4">
                     </video>
                     <p class="description">
@@ -870,7 +871,7 @@
                   <!-- w/o ACG -->
                   <div class="comparison-panel">
                     <span class="method-label method-no-acg">w/o ACG</span>
-                    <video controls muted loop>
+                    <video controls muted loop playsinline webkit-playsinline autoplay preload="metadata">
                       <source src="static/videos/simulation_quali/dexmimicgen/TwoArmThreading_baseline.mp4" type="video/mp4">
                     </video>
                     <p class="description">
@@ -881,7 +882,7 @@
                   <!-- w/ ACG -->
                   <div class="comparison-panel">
                     <span class="method-label method-acg">w/ ACG</span>
-                    <video controls muted loop>
+                    <video controls muted loop playsinline webkit-playsinline autoplay preload="metadata">
                       <source src="static/videos/simulation_quali/dexmimicgen/TwoArmThreading_ours.mp4" type="video/mp4">
                     </video>
                     <p class="description">
@@ -898,7 +899,7 @@
                   <!-- w/o ACG -->
                   <div class="comparison-panel">
                     <span class="method-label method-no-acg">w/o ACG</span>
-                    <video controls muted loop>
+                    <video controls muted loop playsinline webkit-playsinline autoplay preload="metadata">
                       <source src="static/videos/simulation_quali/dexmimicgen/TwoArmLiftTray_baseline.mp4" type="video/mp4">
                     </video>
                     <p class="description">
@@ -909,7 +910,7 @@
                   <!-- w/ ACG -->
                   <div class="comparison-panel">
                     <span class="method-label method-acg">w/ ACG</span>
-                    <video controls muted loop>
+                    <video controls muted loop playsinline webkit-playsinline autoplay preload="metadata">
                       <source src="static/videos/simulation_quali/dexmimicgen/TwoArmLiftTray_ours.mp4" type="video/mp4">
                     </video>
                     <p class="description">
@@ -944,32 +945,32 @@
               <img src="static/images/table1_success_rate.png" alt="Quantitative Results"
                 style="width: 100%; height: auto; border-radius: 8px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);" />
             </figure>
-          </div>
 
-          <div class="columns is-variable is-5">
-            <div class="column is-half">
-              <div class="content has-text-centered">
-                <p class="is-size-5" style="margin-bottom: 2rem; color: #666;">
-                  <strong>Result 2: ACG significantly improves temporal action coherence.</strong>
-                </p>
+            <div class="columns">
+              <div class="column is-half">
+                <div class="content has-text-centered">
+                  <p class="is-size-5" style="margin-bottom: 2rem; color: #666;">
+                    <strong>Result 2: ACG significantly improves temporal action coherence.</strong>
+                  </p>
+                </div>
+
+                <figure>
+                  <img src="static/images/table2_action_coherence_quanti.png" alt="Quantitative Results"
+                    style="width:100%;height:auto;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);" />
+                </figure>
               </div>
+              <div class="column is-half">
+                <div class="content has-text-centered">
+                  <p class="is-size-5" style="margin-bottom: 2rem; color: #666;">
+                    <strong>Result 3: ACG remains effective across various VLA backbones.</strong>
+                  </p>
+                </div>
 
-              <figure>
-                <img src="static/images/table2_action_coherence_quanti.png" alt="Quantitative Results"
-                  style="width:100%;height:auto;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);" />
-              </figure>
-            </div>
-            <div class="column is-half">
-              <div class="content has-text-centered">
-                <p class="is-size-5" style="margin-bottom: 2rem; color: #666;">
-                  <strong>Result 3: ACG remains effective across various VLA backbones.</strong>
-                </p>
+                <figure>
+                  <img src="static/images/table3_generalization.png" alt="Quantitative Results"
+                    style="width:100%;height:auto;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);" />
+                </figure>
               </div>
-
-              <figure>
-                <img src="static/images/table3_generalization.png" alt="Quantitative Results"
-                  style="width:100%;height:auto;border-radius:8px;box-shadow:0 2px 8px rgba(0,0,0,0.1);" />
-              </figure>
             </div>
           </div>
 
