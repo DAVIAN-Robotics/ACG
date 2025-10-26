@@ -58,7 +58,7 @@ pip install -r requirements.txt
 
 ## 🧩 Repository Features
 
-> To the best of our knowledge, this is the **first repository** providing post-trained models and rollout scripts for both **RoboCasa** and **DexMimicGen** benchmarks.
+> To the best of our knowledge, this is the **first public repository** offering post-trained [GR00T-N1-2B](https://github.com/NVIDIA/Isaac-GR00T) models and rollout scripts on both **RoboCasa** and **DexMimicGen** benchmarks.
 >
 > - **RoboCasa**: Reproduced score (**32.6**) closely matches the reported result (**32.1**).
 > - **DexMimicGen**: Reproduced score (**40.6**) is lower than the reported (**58.5**); the cause is under investigation.
