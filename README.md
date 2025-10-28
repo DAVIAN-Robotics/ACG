@@ -1,6 +1,6 @@
 # ACG: Action Coherence Guidance for Flow-based VLA Models
 
-[![arXiv](https://img.shields.io/badge/arXiv-xxxx.xxxxx-b31b1b.svg)](https://arxiv.org/abs/xxxx.xxxxx)
+[![arXiv](https://img.shields.io/badge/arXiv-2510.22201-b31b1b.svg)](https://arxiv.org/abs/2510.22201)
 [![GitHub Code](https://img.shields.io/badge/Code-GitHub-black.svg?logo=github)](https://github.com/davian-robotics/ACG)
 [![Project Page](https://img.shields.io/badge/Project_Page-Visit-blue.svg)](https://davian-robotics.github.io/ACG)
 [![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-blue)](https://huggingface.co/collections/DAVIAN-Robotics/gr00t-n1-2b-post-trained-models)
@@ -166,7 +166,7 @@ bash scripts/base_rollout.sh ${config_path} ${model_path} ${seed} ${n_rollouts} 
 @article{park2025acg,
   title={ACG: Action Coherence Guidance for Flow-based VLA Models},
   author={Park, Minho and Kim, Kinam and Hyung, Junha and Jang, Hyojin and Jin, Hoiyeong and Yun, Jooyeol and Lee, Hojoon and Choo, Jaegul},
-  journal={arXiv preprint arXiv:xxxx.xxxxx},
+  journal={arXiv preprint arXiv:2510.22201},
   year={2025}
 }
 ```
