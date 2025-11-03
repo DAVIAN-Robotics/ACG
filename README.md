@@ -5,6 +5,8 @@
 [![Project Page](https://img.shields.io/badge/Project_Page-Visit-blue.svg)](https://davian-robotics.github.io/ACG)
 [![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-blue)](https://huggingface.co/collections/DAVIAN-Robotics/gr00t-n1-2b-post-trained-models)
 [![YouTube Demo](https://img.shields.io/badge/YouTube-Video-red?logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=Fi6VpnPETYU)
+[![X](https://img.shields.io/badge/X-000000?style=flat&logo=x&logoColor=white)](https://x.com/mpark1999/status/1983001022969852018)
+
 
 > [Minho Park\*](https://pmh9960.github.io/), [Kinam Kim\*](https://kinam0252.github.io/), [Junha Hyung](https://junhahyung.github.io/), [Hyojin Jang](https://github.com/Whit3Snow), [Hoiyeong Jin](https://myyzzzoooo.github.io/), [Jooyeol Yun](https://yeolj00.github.io/), [Hojoon Lee](https://joonleesky.github.io/), and [Jaegul Choo](https://sites.google.com/site/jaegulchoo/)  
 > **DAVIAN Robotics, KAIST AI**  
