@@ -1,4 +1,4 @@
-# ACG: Action Coherence Guidance for Flow-based VLA Models
+# ACG: Action Coherence Guidance for Flow-based VLA Models (ICRA 2026)
 
 [![arXiv](https://img.shields.io/badge/arXiv-2510.22201-b31b1b.svg)](https://arxiv.org/abs/2510.22201)
 [![GitHub Code](https://img.shields.io/badge/Code-GitHub-black.svg?logo=github)](https://github.com/davian-robotics/ACG)
@@ -10,7 +10,7 @@
 
 > [Minho Park\*](https://pmh9960.github.io/), [Kinam Kim\*](https://kinam0252.github.io/), [Junha Hyung](https://junhahyung.github.io/), [Hyojin Jang](https://github.com/Whit3Snow), [Hoiyeong Jin](https://myyzzzoooo.github.io/), [Jooyeol Yun](https://yeolj00.github.io/), [Hojoon Lee](https://joonleesky.github.io/), and [Jaegul Choo](https://sites.google.com/site/jaegulchoo/)  
 > **DAVIAN Robotics, KAIST AI**  
-> arXiv 2025. (\* indicates equal contribution)
+> ICRA 2026. (\* indicates equal contribution)
 
 ## 🌐 Overview
 
