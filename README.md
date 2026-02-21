@@ -1,4 +1,4 @@
-# ACG: Action Coherence Guidance for Flow-based VLA Models (ICRA 2026)
+# ACG: Action Coherence Guidance for Flow-based Vision-Language-Action Models (ICRA 2026)
 
 [![arXiv](https://img.shields.io/badge/arXiv-2510.22201-b31b1b.svg)](https://arxiv.org/abs/2510.22201)
 [![GitHub Code](https://img.shields.io/badge/Code-GitHub-black.svg?logo=github)](https://github.com/davian-robotics/ACG)
