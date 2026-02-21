@@ -3,7 +3,7 @@
 [![arXiv](https://img.shields.io/badge/arXiv-2510.22201-b31b1b.svg)](https://arxiv.org/abs/2510.22201)
 [![GitHub Code](https://img.shields.io/badge/Code-GitHub-black.svg?logo=github)](https://github.com/davian-robotics/ACG)
 [![Project Page](https://img.shields.io/badge/Project_Page-Visit-blue.svg)](https://davian-robotics.github.io/ACG)
-[![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-blue)](https://huggingface.co/collections/DAVIAN-Robotics/gr00t-n1-2b-post-trained-models)
+[![Hugging Face](https://img.shields.io/badge/%F0%9F%A4%97%20Hugging%20Face-Model-blue)](https://huggingface.co/collections/DAVIAN-Robotics/acg-gr00t-n1-2b-post-trained-models)
 [![YouTube Demo](https://img.shields.io/badge/YouTube-Video-red?logo=youtube&logoColor=white)](https://www.youtube.com/watch?v=Fi6VpnPETYU)
 [![X](https://img.shields.io/badge/X-000000?style=flat&logo=x&logoColor=white)](https://x.com/mpark1999/status/1983001022969852018)
 
