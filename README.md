@@ -84,7 +84,7 @@ pip install -r requirements.txt
 ## 🚀 Quick Start
 
 We provide RoboCasa examples below.
-For DexMimicGen and more detailed scripts, see [`./scripts/run_gr00t.md`](./scripts/run_gr00t.md).
+For DexMimicGen and more detailed scripts, see [`./scripts/Training_Rollout_Guideline.md`](./scripts/Training_Rollout_Guideline.md).
 
 ### 🔧 Training (Post-Training Phase)
 
