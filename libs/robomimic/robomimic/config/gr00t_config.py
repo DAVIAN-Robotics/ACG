@@ -46,6 +46,11 @@ class GR00TConfig(BaseConfig):
         self.algo.guidance.num_inference_timesteps = 16
         self.algo.guidance.skip_blocks = [7, 9, 11]
 
+        # PLADIS (single-pass sparse cross-attention guidance) options
+        self.algo.guidance.pladis_scale = 1.5
+        self.algo.guidance.method = "ent15max"  # "ent15max" (entmax1.5) or "sparsemax"
+        self.algo.guidance.pladis_layers = None  # None = all cross-attention blocks (even idx)
+
         ### configs for baselines ###
         self.algo.guidance.threshold = 0.0
         self.algo.guidance.n_ensemble = 1
