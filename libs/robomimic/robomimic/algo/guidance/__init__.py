@@ -18,6 +18,14 @@ def modify_gr00t_policy(name: str, policy: Gr00tPolicy):
         policy.model.get_action = types.MethodType(GR00T_N1_ACG.get_action, policy.model)
         policy.model.action_head.get_action = types.MethodType(FlowmatchingActionHead_ACG.get_action, policy.model.action_head)
 
+    elif name == "pladis":
+        from .pladis import GR00T_N1_PLADIS, FlowmatchingActionHead_PLADIS, Gr00tPolicy_PLADIS
+
+        policy.get_action = types.MethodType(Gr00tPolicy_PLADIS.get_action, policy)
+        policy._get_action_from_normalized_input = types.MethodType(Gr00tPolicy_PLADIS._get_action_from_normalized_input, policy)
+        policy.model.get_action = types.MethodType(GR00T_N1_PLADIS.get_action, policy.model)
+        policy.model.action_head.get_action = types.MethodType(FlowmatchingActionHead_PLADIS.get_action, policy.model.action_head)
+
     ### our baseline methods ###
     elif name == "cfg":
         from .cfg import GR00T_N1_CFG, FlowmatchingActionHead_CFG, Gr00tPolicy_CFG
